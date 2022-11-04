@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   padding: 0;
@@ -13,6 +17,27 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.navbar {
+  @apply flex flex-row justify-around items-center w-full max-h-12 fixed top-0 left-0 gap-3 2xl:px-80 xl:px-44 lg:px-28 transition-all ease-linear;
+  backdrop-filter: blur(.5rem);
+}
+.nav-button {
+  @apply p-4 rounded-sm hover:bg-slate-900 opacity-90 active:bg-white transition-all;
+}
+
+.inputGroup {
+  @apply w-3/6 flex flex-nowrap gap-4 justify-start items-center;
+}
+.inputGroup>label {
+  @apply  text-right text-cyan-300 w-2/6
+}
+.inputGroup>input, .inputGroup>select {
+  @apply  w-2/6
+}
+.invisible {
+  @apply hidden;
 }
 
 @media (prefers-color-scheme: dark) {

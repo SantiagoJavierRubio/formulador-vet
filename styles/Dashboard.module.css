@@ -1,0 +1,6 @@
+.container {
+    @apply w-full h-full flex flex-wrap gap-6 justify-center my-10
+}
+.card {
+    @apply w-32 h-32 rounded-sm shadow-lg bg-cyan-300 p-2 cursor-pointer
+}
