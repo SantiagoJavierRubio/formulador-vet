@@ -4,6 +4,7 @@ import type { Patient } from "../utils/types/Patient";
 import { ChangeEvent, SyntheticEvent, useState } from "react"
 import { PatientSchema } from "../utils/schemas/patient.schema";
 import { ZodError } from "zod"
+import axios from "axios"
 
 interface inputs {
     name: Patient["name"];
@@ -38,10 +39,12 @@ export default function AddPatient() {
         setErrors({});
         const data = {
             ...values,
-            DoB: new Date(values.DoB || '')
+            DoB: new Date(values.DoB || ''),
+            idealWeight: !isIdeal ? values.idealWeight : undefined
         }
         try {
             PatientSchema.parse(data)
+            axios.post("http://localhost:8080/patients", data, { withCredentials: true })
         } catch(err) {
             if (err instanceof ZodError) {
                 const newErrors: {[key: string]: string} = {}
@@ -51,7 +54,6 @@ export default function AddPatient() {
                 setErrors(newErrors);
             }
         }
-        console.log(values)
     }
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setValues(prevValues => ({
@@ -98,7 +100,7 @@ export default function AddPatient() {
             </div>
             <div className={`inputGroup ${isIdeal && 'invisible'}`}>
                 <label htmlFor="idealWeight">Ideal weight:</label>
-                <input type="number" step="0.01" min="0" name="idealWeight" value={values.idealWeight} onChange={handleChange} disabled={isIdeal}/>
+                <input type="number" step="0.01" min="0" name="idealWeight" value={values.idealWeight || 0} onChange={handleChange} disabled={isIdeal}/>
                 <p>{errors.idealWeight}</p>
             </div>
             <button type="submit">Send</button>

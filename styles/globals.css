@@ -28,13 +28,13 @@ a {
 }
 
 .inputGroup {
-  @apply w-3/6 flex flex-nowrap gap-4 justify-start items-center;
+  @apply w-4/6 flex flex-nowrap gap-4 justify-start items-center;
 }
 .inputGroup>label {
-  @apply  text-right text-cyan-300 w-2/6
+  @apply  text-right text-cyan-300 w-4/6
 }
 .inputGroup>input, .inputGroup>select {
-  @apply  w-2/6
+  @apply  w-4/6
 }
 .invisible {
   @apply hidden;
