@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   env: {
-    API_URL: "https://dietvet.fly.dev",
+    API_URL: process.env.API_URL,
   },
 };
 
