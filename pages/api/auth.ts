@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (data.access_token) {
       res.setHeader(
         "Set-Cookie",
-        `access_token=${data.access_token};HttpOnly=true;${domain}=localhost;Path=/;`
+        `access_token=${data.access_token};HttpOnly=true;domain=${domain};Path=/;`
       );
       res.setHeader("Access-Control-Allow-Origin", `${constants.apiUrl}`);
       res.setHeader("Access-Control-Allow-Credentials", "true");
