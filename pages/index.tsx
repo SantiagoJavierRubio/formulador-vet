@@ -2,14 +2,15 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Layout from '../components/Layout'
-import { NextApiRequest } from 'next'
 import type { User } from '../utils/types/User'
 import type { Patient } from '../utils/types/Patient'
 import Dashboard from '../components/Dashboard/Dashboard'
 import axios from 'axios'
 import constants from '../utils/constants'
+import { sessionWrapper } from '../utils/sessionWrapper'
+import { getPatients } from '../utils/api/requests'
 
-export default function Home({ user, patients }: { user?: User, patients?: Patient[] }) {
+export default function Home({ patients }: { patients?: Patient[] }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -18,7 +19,7 @@ export default function Home({ user, patients }: { user?: User, patients?: Patie
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        {user && <Dashboard patients={patients}/>}
+        <Dashboard patients={patients}/>
       </Layout>
       <footer className={styles.footer}>
         <a
@@ -36,26 +37,23 @@ export default function Home({ user, patients }: { user?: User, patients?: Patie
   )
 }
 
-export async function getServerSideProps({ req }: { req: NextApiRequest }) {
-  try {
-    const userResponse = await axios.get(`${constants.apiUrl}/user`, { withCredentials: true, headers: {
-      Cookie: req.headers.cookie
-    } });
-    const user = userResponse?.data;
-    if(user) {
-      const patientsResponse = await axios.get(`${constants.apiUrl}/patients`, { withCredentials: true, headers: {
-        Cookie: req.headers.cookie
-      } });
-      const patients = patientsResponse?.data?.patients as Patient[]
-      return { props: { user, patients }}
-    }
-    return { props: {} }
-  } catch(err) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false
+export const getServerSideProps = sessionWrapper(
+  async function({ req }) {
+    try {
+      const user = req.session.user;
+      if(user) {
+        const patientsResponse = await getPatients(user.token);
+        const patients = patientsResponse?.data?.patients as Patient[]
+        return { props: { patients }}
+      }
+      return { props: {} }
+    } catch(err) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false
+        }
       }
     }
   }
-}
+)

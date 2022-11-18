@@ -3,4 +3,5 @@ export type User = {
   email: string;
   subscribed: number;
   displayName?: string;
+  token: string;
 };

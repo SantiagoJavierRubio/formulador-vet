@@ -12,7 +12,7 @@ export default function Login() {
         </Head>
         <div className={styles.formContainer}>
             <h3 className={styles.title}>Login</h3>
-            <form className={styles.form} method="POST" action="/api/auth">
+            <form className={styles.form} method="POST" action="/api/login">
                 <label htmlFor='email'>Email:</label>
                 <input type="email" name="email" required />
                 <label htmlFor='password'>Password:</label>

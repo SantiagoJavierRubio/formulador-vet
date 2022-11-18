@@ -4,10 +4,11 @@ import type { Patient } from "../utils/types/Patient";
 import { ChangeEvent, SyntheticEvent, useState } from "react"
 import { PatientSchema } from "../utils/schemas/patient.schema";
 import { ZodError } from "zod"
-import axios from "axios"
 import { useRouter } from "next/router";
 import styles from "../styles/AddPatient.module.css"
-import constants from '../utils/constants';
+import { sessionWrapper } from "../utils/sessionWrapper";
+import type { User } from "../utils/types/User";
+import { createPatient } from "../utils/api/requests";
 
 interface inputs {
     name: Patient["name"];
@@ -25,7 +26,7 @@ interface errors {
     idealWeight?: string;
 }
 
-export default function AddPatient() {
+export default function AddPatient({ user }: { user?: User }) {
 
     const [values, setValues] = useState<inputs>({
         name: "",
@@ -48,8 +49,9 @@ export default function AddPatient() {
         }
         try {
             PatientSchema.parse(data)
-            const response = await axios.post(`${constants.apiUrl}/patients`, data, { withCredentials: true })
-            if(response.data) router.push('/')
+            const response = await createPatient(data, user?.token)
+            console.log(response)
+            if(response?.data) router.push('/')
         } catch(err) {
             if (err instanceof ZodError) {
                 const newErrors: {[key: string]: string} = {}
@@ -114,3 +116,11 @@ export default function AddPatient() {
     </>
   )
 }
+
+export const getServerSideProps = sessionWrapper(
+    async function({ req }) {
+        return {
+            props: { user: req.session.user }
+        }
+    }
+)
