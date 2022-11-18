@@ -48,7 +48,7 @@ export default function AddPatient() {
         }
         try {
             PatientSchema.parse(data)
-            const response = await axios.post(`${constants.apiUrl}/patients`, data)
+            const response = await axios.post(`${constants.apiUrl}/patients`, data, { withCredentials: true })
             if(response.data) router.push('/')
         } catch(err) {
             if (err instanceof ZodError) {
