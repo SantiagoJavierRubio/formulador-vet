@@ -24,8 +24,8 @@ export default function Dashboard({ patients }: { patients?: Patient[] }) {
         })}
         <Link href="add-patient" className={styles.card}>
             <div className="flex flex-col justify-center w-full h-full py-3">
-                <MdPets className="m-auto text-2xl"/>
-                <h6 className="text-center">Add new patient</h6>
+                <MdPets size={64} className="m-auto text-2xl"/>
+                <h6 className="text-center text-xl">Add new patient</h6>
             </div>
         </Link>
     </div>

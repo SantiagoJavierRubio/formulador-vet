@@ -1,0 +1,31 @@
+.container {
+    @apply w-full h-screen flex justify-center items-center flex-col
+}
+
+.title {
+    @apply text-5xl mb-6 text-center text-cyan-600
+}
+
+.formContainer {
+    @apply p-8 border-2 border-cyan-900 rounded-lg w-full max-w-lg shadow-sm shadow-cyan-900
+}
+
+.form {
+    @apply w-full flex flex-col m-auto gap-3
+}
+
+.form > label {
+    @apply text-lg -mb-2
+}
+
+.form > input {
+    @apply ml-2
+}
+
+.optNav {
+    @apply mt-3 p-2 text-center text-lg
+}
+
+.optNav > a {
+    @apply hover:underline
+}

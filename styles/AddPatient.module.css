@@ -1,0 +1,12 @@
+.inputGroup {
+    @apply w-4/6 flex flex-nowrap gap-4 justify-start items-center;
+}
+.inputGroup>label {
+    @apply text-right text-lg text-cyan-300 w-4/6;
+}
+.inputGroup>input, .inputGroup>select {
+    @apply w-4/6;
+}
+.invisible {
+    @apply hidden;
+}

@@ -2,12 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap');
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Figtree', Roboto, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -27,22 +28,20 @@ a {
   @apply p-4 rounded-sm hover:bg-slate-900 opacity-90 active:bg-white transition-all;
 }
 
-.inputGroup {
-  @apply w-4/6 flex flex-nowrap gap-4 justify-start items-center;
+input, select {
+  @apply rounded-md p-2 bg-slate-100 text-black font-medium text-lg focus:border-cyan-400 focus:border-4
 }
-.inputGroup>label {
-  @apply  text-right text-cyan-300 w-4/6
-}
-.inputGroup>input, .inputGroup>select {
-  @apply  w-4/6
-}
-.invisible {
-  @apply hidden;
+
+.mainActionBtn {
+  @apply bg-cyan-700 p-4 text-lg font-bold rounded-lg hover:bg-cyan-500 active:bg-cyan-600
 }
 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+  input, select {
+    color-scheme: light;
   }
   body {
     color: white;

@@ -3,11 +3,13 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Layout from '../components/Layout'
 import { NextApiRequest } from 'next'
+import type { User } from '../utils/types/User'
 import type { Patient } from '../utils/types/Patient'
 import Dashboard from '../components/Dashboard/Dashboard'
-import axios from "axios";
+import axios from 'axios'
+import constants from '../utils/constants'
 
-export default function Home({ patients }: { patients?: Patient[] }) {
+export default function Home({ user, patients }: { user?: User, patients?: Patient[] }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -16,12 +18,7 @@ export default function Home({ patients }: { patients?: Patient[] }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <form method="POST" action="/api/auth">
-          <input type="email" name="email" />
-          <input type="password" name="password" />
-          <button type="submit">Sign in</button>
-        </form>
-        <Dashboard patients={patients} />
+        {user && <Dashboard patients={patients}/>}
       </Layout>
       <footer className={styles.footer}>
         <a
@@ -39,15 +36,26 @@ export default function Home({ patients }: { patients?: Patient[] }) {
   )
 }
 
-export async function getServerSideProps({ req }: { req: NextApiRequest}) {
+export async function getServerSideProps({ req }: { req: NextApiRequest }) {
   try {
-    const response = await axios.get("http://localhost:8080/patients", { withCredentials: true, headers: {
+    const userResponse = await axios.get(`${constants.apiUrl}/user`, { withCredentials: true, headers: {
       Cookie: req.headers.cookie
     } });
-    const patients = response.data.patients as Patient[]
-    return { props: { patients }}
-  } catch(err) {
-    console.log(err);
+    const user = userResponse?.data;
+    if(user) {
+      const patientsResponse = await axios.get(`${constants.apiUrl}/patients`, { withCredentials: true, headers: {
+        Cookie: req.headers.cookie
+      } });
+      const patients = patientsResponse?.data?.patients as Patient[]
+      return { props: { user, patients }}
+    }
     return { props: {} }
+  } catch(err) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
   }
 }

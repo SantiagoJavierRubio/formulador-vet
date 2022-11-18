@@ -5,6 +5,9 @@ import { ChangeEvent, SyntheticEvent, useState } from "react"
 import { PatientSchema } from "../utils/schemas/patient.schema";
 import { ZodError } from "zod"
 import axios from "axios"
+import { useRouter } from "next/router";
+import styles from "../styles/AddPatient.module.css"
+import constants from '../utils/constants';
 
 interface inputs {
     name: Patient["name"];
@@ -33,6 +36,7 @@ export default function AddPatient() {
     });
     const [isIdeal, setIdeal] = useState(true);
     const [errors, setErrors] = useState<errors>({});
+    const router = useRouter();
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -44,7 +48,9 @@ export default function AddPatient() {
         }
         try {
             PatientSchema.parse(data)
-            axios.post("http://localhost:8080/patients", data, { withCredentials: true })
+            axios.post(`${constants.apiUrl}/patients`, data, { withCredentials: true }).then(res => {
+                if(res.data) router.push('/')
+            })
         } catch(err) {
             if (err instanceof ZodError) {
                 const newErrors: {[key: string]: string} = {}
@@ -71,30 +77,30 @@ export default function AddPatient() {
     </Head>
     <Layout>
         <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center gap-4">
-            <div className="inputGroup">
+            <div className={styles.inputGroup}>
                 <label htmlFor="name">Name:</label>
                 <input type="text" name="name" value={values.name} onChange={handleChange} required/>
                 <p>{errors.name}</p>
             </div>
-            <div className="inputGroup">
+            <div className={styles.inputGroup}>
                 <label htmlFor="species">Species:</label>
-                <select name="species" value={values.species} onChange={handleChange} required>
+                <select name="species" title="species" value={values.species} onChange={handleChange} required>
                     <option value="dog">Dog</option>
                     <option value="cat">Cat</option>
                 </select>
                 <p>{errors.species}</p>
             </div>
-            <div className="inputGroup">
+            <div className={styles.inputGroup}>
                 <label htmlFor="DoB">Age:</label>
                 <input type="date" name="DoB" value={values.DoB} onChange={handleChange} required/>
                 <p>{errors.DoB}</p>
             </div>
-            <div className="inputGroup">
+            <div className={styles.inputGroup}>
                 <label htmlFor="weight">Weight:</label>
                 <input type="number" step="0.01" min="0" name="weight" value={values.weight} onChange={handleChange} required/>
                 <p>{errors.weight}</p>
             </div>
-            <div className="inputGroup">
+            <div className={styles.inputGroup}>
                 <label htmlFor="isIdealWeight">Is on it&apos;s ideal weight</label>
                 <input type="checkbox" name="isIdealWeight" checked={isIdeal} onChange={toggleIdeal} />
             </div>
@@ -103,7 +109,7 @@ export default function AddPatient() {
                 <input type="number" step="0.01" min="0" name="idealWeight" value={values.idealWeight || 0} onChange={handleChange} disabled={isIdeal}/>
                 <p>{errors.idealWeight}</p>
             </div>
-            <button type="submit">Send</button>
+            <button className="mainActionBtn w-full max-w-xs" type="submit">Send</button>
         </form>
     </Layout>
     </>
