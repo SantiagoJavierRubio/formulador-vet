@@ -12,10 +12,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       headers: { "Content-type": "application/json" },
     });
     const data = await response.json();
+    const domain = new URL(`${constants.apiUrl}`).hostname;
     if (data.access_token) {
       res.setHeader(
         "Set-Cookie",
-        `access_token=${data.access_token};HttpOnly=true;domain=${constants.apiUrl};Path=/;`
+        `access_token=${data.access_token};HttpOnly=true;${domain}=localhost;Path=/;`
       );
       res.setHeader("Access-Control-Allow-Origin", `${constants.apiUrl}`);
       res.setHeader("Access-Control-Allow-Credentials", "true");
