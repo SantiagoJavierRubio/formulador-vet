@@ -22,6 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           secure: process.env.NODE_ENV !== "development",
           maxAge: 60 * 60,
           path: "/",
+          domain: domain,
         })
       );
       res.setHeader("Access-Control-Allow-Origin", `${constants.apiUrl}`);
