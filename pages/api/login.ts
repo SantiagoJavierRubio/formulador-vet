@@ -22,8 +22,9 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
         token: data.access_token,
       };
       await req.session.save();
+      return res.redirect("/");
     }
-    return res.redirect("/");
+    return res.redirect("/login");
   } catch (err) {
     res.status(500).json(err);
   }

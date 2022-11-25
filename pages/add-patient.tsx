@@ -10,7 +10,7 @@ import { sessionWrapper } from "../utils/sessionWrapper";
 import type { User } from "../utils/types/User";
 import { createPatient } from "../utils/api/requests";
 
-interface inputs {
+export interface inputs {
     name: Patient["name"];
     species: Patient["species"];
     DoB: string | undefined;
@@ -26,7 +26,7 @@ interface errors {
     idealWeight?: string;
 }
 
-export default function AddPatient({ user }: { user?: User }) {
+export default function AddPatient({ user }: { user: User | null }) {
 
     const [values, setValues] = useState<inputs>({
         name: "",
@@ -49,9 +49,13 @@ export default function AddPatient({ user }: { user?: User }) {
         }
         try {
             PatientSchema.parse(data)
-            const response = await createPatient(data, user?.token)
-            console.log(response)
-            if(response?.data) router.push('/')
+            if(user) {
+                const response = await createPatient(data, user.token)
+                if(response?.data) router.push('/')
+            } else {
+                localStorage.setItem("patient", JSON.stringify(data))
+                router.push('/')
+            }
         } catch(err) {
             if (err instanceof ZodError) {
                 const newErrors: {[key: string]: string} = {}
@@ -76,7 +80,7 @@ export default function AddPatient({ user }: { user?: User }) {
     <Head>
         <title>Add a new patient</title>
     </Head>
-    <Layout>
+    <Layout user={user}>
         <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center gap-4">
             <div className={styles.inputGroup}>
                 <label htmlFor="name">Name:</label>
@@ -120,7 +124,7 @@ export default function AddPatient({ user }: { user?: User }) {
 export const getServerSideProps = sessionWrapper(
     async function({ req }) {
         return {
-            props: { user: req.session.user }
+            props: { user: req.session.user || null }
         }
     }
 )

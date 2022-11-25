@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import type { Patient } from "../../utils/types/Patient"
 import styles from "../../styles/Dashboard.module.css";
 import { MdPets } from "react-icons/md";
@@ -7,9 +8,18 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Dashboard({ patients }: { patients?: Patient[] }) {
+    const [AllPatients, setAllPatient] = useState<Patient[] | undefined>(patients)
+    useEffect(() => {
+        if(!patients) {
+          const patient = localStorage.getItem("patient");
+          if(!patient) return;
+          const parsedPatient = JSON.parse(patient) as Patient;
+          setAllPatient([{...parsedPatient, veterinarian: 1, id: 1}])
+        }
+      }, [patients])
   return (
     <div className={styles.container}>
-        {patients && patients.map(patient => {
+        {AllPatients && AllPatients.map(patient => {
             return (
                 <div className={styles.card} key={patient.id}>
                     <h1 className="z-10 text-3xl relative break-before-auto">{patient.name}</h1>
