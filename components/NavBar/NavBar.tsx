@@ -8,7 +8,7 @@ interface NavBarProps {
 export default function NavBar({ username }: NavBarProps) {
   return (
     <div className="navbar">
-      <NavButton name="Home" route="/" />
+      <NavButton name="Home" route={username ? "/dashboard" : "/"} />
       <NavButton name="About" route="/about" />
       {username ?
         <form action="/api/logout">
@@ -16,7 +16,7 @@ export default function NavBar({ username }: NavBarProps) {
             {username} <BiLogOutCircle />
           </button>
         </form> : 
-      <NavButton name="Login" route="/login">
+      <NavButton name="Register" route="/signup">
         <BiLogInCircle />  
       </NavButton>}
     </div>

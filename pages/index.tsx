@@ -1,15 +1,11 @@
-import { useEffect } from "react";
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import Layout from '../components/Layout'
 import type { User } from '../utils/types/User'
-import type { Patient } from '../utils/types/Patient'
-import Dashboard from '../components/Dashboard/Dashboard'
 import { sessionWrapper } from '../utils/sessionWrapper'
-import { getPatients } from '../utils/api/requests'
+import Link from 'next/link'
 
-export default function Home({ user, patients }: { patients?: Patient[], user?: User }) {
+export default function Home({ user }: { user?: User }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -17,9 +13,11 @@ export default function Home({ user, patients }: { patients?: Patient[], user?: 
         <meta name="description" content="Formulate your patient's diets" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout user={user || null}>
-        <Dashboard patients={patients}/>
-      </Layout>
+      <main>
+        <h1>Welcome to VetDiet</h1>
+        <h3>Landing page data, info, etc...</h3>
+        <Link href="/dashboard">{user ? "My patients" : "Try it out"}</Link>
+      </main>
       <footer className={styles.footer}>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -40,11 +38,7 @@ export const getServerSideProps = sessionWrapper(
   async function({ req }) {
     try {
       const user = req.session.user;
-      if(user) {
-        const patientsResponse = await getPatients(user.token);
-        const patients = patientsResponse?.data?.patients as Patient[]
-        return { props: { user, patients }}
-      }
+      if(user) return { props: { user } }
       return { props: {} }
     } catch(err) {
       return {

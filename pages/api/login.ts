@@ -23,7 +23,7 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
         name: data.user.name,
       };
       await req.session.save();
-      return res.redirect("/");
+      return res.redirect("/dashboard");
     }
     return res.redirect("/login");
   } catch (err) {
