@@ -19,6 +19,7 @@ declare module "iron-session" {
       id: number;
       email: string;
       token: string;
+      name: string;
     };
   }
 }

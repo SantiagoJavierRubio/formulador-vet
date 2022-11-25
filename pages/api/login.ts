@@ -20,6 +20,7 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
         id: data.user.id,
         email: data.user.email,
         token: data.access_token,
+        name: data.user.name,
       };
       await req.session.save();
       return res.redirect("/");

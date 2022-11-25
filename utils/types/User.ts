@@ -2,6 +2,6 @@ export type User = {
   id: number;
   email: string;
   subscribed: number;
-  displayName?: string;
+  name: string;
   token: string;
 };
