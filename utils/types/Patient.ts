@@ -3,7 +3,7 @@ export type Patient = {
   veterinarian: number;
   species: "cat" | "dog";
   name: string;
-  DoB: Date;
+  DoB: Date | string;
   weight: number;
   idealWeight?: number;
   created: string;

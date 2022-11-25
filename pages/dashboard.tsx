@@ -31,7 +31,7 @@ export const getServerSideProps = sessionWrapper(
     try {
       const user = req.session.user;
       if(user) {
-        const patientsResponse = await getPatients(user.token);
+        const patientsResponse = await getPatients('', user.token);
         const patients = patientsResponse?.data?.patients as Patient[]
         return { props: { user, patients }}
       }

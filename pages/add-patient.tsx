@@ -51,10 +51,10 @@ export default function AddPatient({ user }: { user: User | null }) {
             PatientSchema.parse(data)
             if(user) {
                 const response = await createPatient(data, user.token)
-                if(response?.data) router.push('/')
+                if(response?.data) router.push('/dashboard')
             } else {
                 localStorage.setItem("patient", JSON.stringify(data))
-                router.push('/')
+                router.push('/dashboard')
             }
         } catch(err) {
             if (err instanceof ZodError) {
@@ -109,7 +109,7 @@ export default function AddPatient({ user }: { user: User | null }) {
                 <label htmlFor="isIdealWeight">Is on it&apos;s ideal weight</label>
                 <input type="checkbox" name="isIdealWeight" checked={isIdeal} onChange={toggleIdeal} />
             </div>
-            <div className={`inputGroup ${isIdeal && 'invisible'}`}>
+            <div className={`${styles.inputGroup} ${isIdeal && 'invisible'}`}>
                 <label htmlFor="idealWeight">Ideal weight:</label>
                 <input type="number" step="0.01" min="0" name="idealWeight" value={values.idealWeight || 0} onChange={handleChange} disabled={isIdeal}/>
                 <p>{errors.idealWeight}</p>

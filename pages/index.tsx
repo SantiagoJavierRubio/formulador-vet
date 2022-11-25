@@ -17,6 +17,7 @@ export default function Home({ user }: { user?: User }) {
         <h1>Welcome to VetDiet</h1>
         <h3>Landing page data, info, etc...</h3>
         <Link href="/dashboard">{user ? "My patients" : "Try it out"}</Link>
+        {!user && <Link href="/login">Sign in</Link>}
       </main>
       <footer className={styles.footer}>
         <a
@@ -36,17 +37,8 @@ export default function Home({ user }: { user?: User }) {
 
 export const getServerSideProps = sessionWrapper(
   async function({ req }) {
-    try {
-      const user = req.session.user;
-      if(user) return { props: { user } }
-      return { props: {} }
-    } catch(err) {
       return {
-        redirect: {
-          destination: '/login',
-          permanent: false
-        }
-      }
+        props: { user: req.session.user || null }
     }
   }
 )

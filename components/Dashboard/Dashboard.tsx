@@ -21,7 +21,7 @@ export default function Dashboard({ patients }: { patients?: Patient[] }) {
     <div className={styles.container}>
         {AllPatients && AllPatients.map(patient => {
             return (
-                <div className={styles.card} key={patient.id}>
+                <Link href={`/patients/${patient.id}`} className={styles.card} key={patient.id}>
                     <h1 className="z-10 text-3xl relative break-before-auto">{patient.name}</h1>
                     <Image 
                         src={patient.species === "cat" ? Cat : Dog}
@@ -29,7 +29,7 @@ export default function Dashboard({ patients }: { patients?: Patient[] }) {
                         height="100"
                         className={styles.coverImage}
                     />
-                </div>
+                </Link>
             )
         })}
         <Link href="add-patient" className={styles.card}>
