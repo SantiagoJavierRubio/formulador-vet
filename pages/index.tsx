@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import type { User } from '../utils/types/User'
 import { sessionWrapper } from '../utils/sessionWrapper'
-import Link from 'next/link'
+import Landing from '../components/Landing/Landing'
 
 export default function Home({ user }: { user?: User }) {
   return (
@@ -13,12 +13,7 @@ export default function Home({ user }: { user?: User }) {
         <meta name="description" content="Formulate your patient's diets" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1>Welcome to VetDiet</h1>
-        <h3>Landing page data, info, etc...</h3>
-        <Link href="/dashboard">{user ? "My patients" : "Try it out"}</Link>
-        {!user && <Link href="/login">Sign in</Link>}
-      </main>
+      <Landing user={user} />
       <footer className={styles.footer}>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
