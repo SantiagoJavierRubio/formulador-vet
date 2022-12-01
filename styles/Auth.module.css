@@ -1,5 +1,5 @@
 .container {
-    @apply w-full h-screen flex justify-center items-center flex-col
+    @apply w-full h-screen flex justify-center items-center flex-col bg-gray-900;
 }
 
 .title {
@@ -7,7 +7,8 @@
 }
 
 .formContainer {
-    @apply p-8 border-2 border-cyan-900 rounded-lg w-full max-w-lg shadow-sm shadow-cyan-900
+    @apply p-8 border-2 border-cyan-900 rounded-lg w-full max-w-lg bg-black shadow-cyan-900;
+    box-shadow: 0px 0px 50px 10px rgba(22, 78, 99, 0.2);
 }
 
 .form {
