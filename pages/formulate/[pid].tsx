@@ -1,12 +1,48 @@
+import { useState, useRef } from "react";
 import { sessionWrapper } from "../../utils/sessionWrapper";
 import { getPatients } from "../../utils/api/requests";
 import type { Patient } from "../../utils/types/Patient";
 import type { User } from "../../utils/types/User";
+import { DietSchema, Diet } from "../../utils/schemas/diet.schema";
+import { useForm } from "../../hooks/useForm";
+import Head from "next/head";
+import FormElement from "../../components/FormElement/FormElement";
 
 export default function Formulate({ patientData, user }: { patientData: Patient | null, user: User | null }) {
+  const [stage, setStage] = useState<number>(0);
+  const { values, errors, handleChange } = useForm<Diet>({
+    initialValues: {
+      adjFactor: 0,
+      weightPercentage: 0
+    },
+    validationSchema: DietSchema
+  });
   if(!patientData) return <div>Patient not found</div>
+  const handleStageChange = (stageNum: number) => {
+    setStage(stageNum);
+  }
+  const title = `Formulating for ${patientData.name}`
   return (
-    <div>Formulating for {patientData.name}</div>
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content="Formulate your patient's diets" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div>
+        <FormElement title={"Requirements & Goals"} startOpen={true}>
+          <label htmlFor="adjFactor">Factor de ajuste</label>
+          <input type="number" min="0" value={values.adjFactor} step="1" required onChange={handleChange} name="adjFactor" id="adjFactor" />
+          <label htmlFor="weightPercentage">% Peso vivo</label>
+          <input type="number" min="0" value={values.weightPercentage} step="0.1" required onChange={handleChange} name="weightPercentage" id="weightPercentage" />
+          <button type="button" onClick={() => handleStageChange(1)}>Continue</button>
+        </FormElement>
+        <FormElement title={"Formulation"} forceState={stage === 1 || undefined}>
+          <p>caca</p>
+          <button type="button" onClick={() => handleStageChange(1)}>Continue</button>
+        </FormElement>
+      </div>
+    </>
   )
 }
 
