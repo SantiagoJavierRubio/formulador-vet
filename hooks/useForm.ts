@@ -20,7 +20,7 @@ export function useForm<T>({
   ) => {
     let parsedValue: string | number =
       e.target.type === "number"
-        ? parseFloat(e.target.value) || 0
+        ? parseFloat(e.target.value) || ""
         : e.target.value || "";
     setValues((prevValues) => ({
       ...prevValues,

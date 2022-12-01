@@ -1,0 +1,20 @@
+.reqContainer {
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-columns: 1fr;
+    gap: 0.75rem;
+}
+.reqContainer .inputGroup {
+    @apply grid gap-1;
+}
+
+.inputGroup {
+    @apply m-auto max-w-full;
+}
+.percentage {
+    @apply relative;
+}
+.percentage::after {
+    content: "%";
+    @apply absolute top-2 right-8 text-black text-lg font-bold h-full w-4;
+}

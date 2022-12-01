@@ -29,7 +29,7 @@ a {
 }
 
 input, select {
-  @apply rounded-md p-2 bg-slate-100 text-black font-medium text-lg focus:border-cyan-400 focus:border-4
+  @apply rounded-md p-2 bg-slate-100 text-black font-medium text-lg focus:border-cyan-400;
 }
 
 .mainActionBtn {

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { sessionWrapper } from "../../utils/sessionWrapper";
 import { getPatients } from "../../utils/api/requests";
 import type { Patient } from "../../utils/types/Patient";
@@ -7,6 +7,8 @@ import { DietSchema, Diet } from "../../utils/schemas/diet.schema";
 import { useForm } from "../../hooks/useForm";
 import Head from "next/head";
 import FormElement from "../../components/FormElement/FormElement";
+import { dailyRequirements } from "../../calculations/calculations";
+import styles from "../../styles/Formulator.module.css";
 
 export default function Formulate({ patientData, user }: { patientData: Patient | null, user: User | null }) {
   const [stage, setStage] = useState<number>(0);
@@ -20,6 +22,9 @@ export default function Formulate({ patientData, user }: { patientData: Patient 
   if(!patientData) return <div>Patient not found</div>
   const handleStageChange = (stageNum: number) => {
     setStage(stageNum);
+    setTimeout(() => {
+      setStage(0)
+    }, 200)
   }
   const title = `Formulating for ${patientData.name}`
   return (
@@ -31,14 +36,23 @@ export default function Formulate({ patientData, user }: { patientData: Patient 
       </Head>
       <div>
         <FormElement title={"Requirements & Goals"} startOpen={true}>
-          <label htmlFor="adjFactor">Factor de ajuste</label>
-          <input type="number" min="0" value={values.adjFactor} step="1" required onChange={handleChange} name="adjFactor" id="adjFactor" />
-          <label htmlFor="weightPercentage">% Peso vivo</label>
-          <input type="number" min="0" value={values.weightPercentage} step="0.1" required onChange={handleChange} name="weightPercentage" id="weightPercentage" />
+          <div className={styles.reqContainer}>
+            <div className={styles.inputGroup}>
+              <label htmlFor="adjFactor">Factor de ajuste</label>
+              <input type="number" min="0" value={values.adjFactor} step="1" required onChange={handleChange} name="adjFactor" id="adjFactor" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label htmlFor="weightPercentage">% Peso vivo</label>
+              <div className={styles.percentage}>
+                <input type="number" min="0" value={values.weightPercentage} step="0.1" required onChange={handleChange} name="weightPercentage" id="weightPercentage" />
+              </div>
+            </div>
+          </div>
           <button type="button" onClick={() => handleStageChange(1)}>Continue</button>
         </FormElement>
         <FormElement title={"Formulation"} forceState={stage === 1 || undefined}>
-          <p>caca</p>
+          <p>{dailyRequirements(patientData.weight, patientData.species, values.adjFactor)} kcal / day</p>
+          {values.weightPercentage !== undefined && values.weightPercentage !== 0 && <p>{Math.floor(patientData.weight*values.weightPercentage)} g / day</p>}
           <button type="button" onClick={() => handleStageChange(1)}>Continue</button>
         </FormElement>
       </div>
