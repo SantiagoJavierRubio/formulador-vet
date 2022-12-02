@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+
 import styles from "../styles/Auth.module.css";
 
 export default function Login() {

@@ -1,11 +1,12 @@
 import { ChangeEvent, useState } from "react";
+import Link from "next/link";
+import Layout from "../../components/Layout";
+import { useRouter } from "next/router";
+
 import { sessionWrapper } from "../../utils/sessionWrapper";
 import { getPatients, deletePatient } from "../../utils/api/requests";
 import type { Patient } from "../../utils/types/Patient";
 import type { User } from "../../utils/types/User";
-import Link from "next/link";
-import Layout from "../../components/Layout";
-import { useRouter } from "next/router";
 
 export default function Patient({ patientData, user }: { patientData: Patient | null, user: User | null }) {
     const [inputName, setInputName] = useState<string>('');
@@ -31,19 +32,17 @@ export default function Patient({ patientData, user }: { patientData: Patient | 
     }
   return (
     <Layout user={user}>
-        <>
-            <h1>{name}</h1>
-            <h6>({species})</h6>
-            <p>Date of birth: {new Date(DoB).toLocaleDateString()}</p>
-            <p>Weight: {weight} kg</p>
-            {idealWeight && <p>Ideal weight: {idealWeight} kg</p>}
-            <Link href={`/formulate/${id}`}>Formulate diet</Link>
-            <div>
-                <label htmlFor="patient-name">Enter patient name to delete</label>
-                <input type="text" id="patient-name" onChange={handleName} value={inputName} />
-                <button disabled={!(inputName === name)} onClick={handleDelete}>Delete this patient</button>
-            </div>
-        </>
+        <h1>{name}</h1>
+        <h6>({species})</h6>
+        <p>Date of birth: {new Date(DoB).toLocaleDateString()}</p>
+        <p>Weight: {weight} kg</p>
+        {idealWeight && <p>Ideal weight: {idealWeight} kg</p>}
+        <Link href={`/formulate/${id}`}>Formulate diet</Link>
+        <div>
+            <label htmlFor="patient-name">Enter patient name to delete</label>
+            <input type="text" id="patient-name" onChange={handleName} value={inputName} />
+            <button disabled={!(inputName === name)} onClick={handleDelete}>Delete this patient</button>
+        </div>
     </Layout>
   )
 }

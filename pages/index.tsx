@@ -1,9 +1,11 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import type { User } from '../utils/types/User'
-import { sessionWrapper } from '../utils/sessionWrapper'
+
 import Landing from '../components/Landing/Landing'
+import { sessionWrapper } from '../utils/sessionWrapper'
+import type { User } from '../utils/types/User'
+
+import styles from '../styles/Home.module.css'
 
 export default function Home({ user }: { user?: User }) {
   return (

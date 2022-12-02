@@ -1,10 +1,10 @@
-import React from "react"
-import { User } from "../utils/types/User"
+import { ReactNode } from "react"
 import NavBar from "./NavBar/NavBar"
+import type { User } from "../utils/types/User"
 
 interface LayoutProps {
   user: User | null;
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 export default function Layout({ user, children }: LayoutProps) {

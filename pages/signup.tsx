@@ -3,9 +3,11 @@ import axios, { AxiosError } from 'axios';
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
-import styles from "../styles/Auth.module.css";
+
 import { RegisterSchema } from "../utils/schemas/user.schema";
 import constants from "../utils/constants";
+
+import styles from "../styles/Auth.module.css";
 
 interface input {
     displayName?: string;

@@ -1,13 +1,16 @@
 import { useState } from "react";
+import Head from "next/head";
+
 import { sessionWrapper } from "../../utils/sessionWrapper";
 import { getPatients } from "../../utils/api/requests";
-import type { Patient } from "../../utils/types/Patient";
-import type { User } from "../../utils/types/User";
 import { DietSchema, Diet } from "../../utils/schemas/diet.schema";
 import { useForm } from "../../hooks/useForm";
-import Head from "next/head";
 import FormElement from "../../components/FormElement/FormElement";
 import { dailyRequirements } from "../../calculations/calculations";
+
+import type { Patient } from "../../utils/types/Patient";
+import type { User } from "../../utils/types/User";
+
 import styles from "../../styles/Formulator.module.css";
 
 export default function Formulate({ patientData, user }: { patientData: Patient | null, user: User | null }) {

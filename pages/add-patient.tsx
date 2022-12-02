@@ -1,14 +1,16 @@
+import { ChangeEvent, SyntheticEvent, useState } from "react"
 import Layout from "../components/Layout"
 import Head from "next/head";
-import type { Patient } from "../utils/types/Patient";
-import { ChangeEvent, SyntheticEvent, useState } from "react"
-import { PatientSchema } from "../utils/schemas/patient.schema";
-import { ZodError } from "zod"
 import { useRouter } from "next/router";
-import styles from "../styles/AddPatient.module.css"
+
+import { ZodError } from "zod"
 import { sessionWrapper } from "../utils/sessionWrapper";
-import type { User } from "../utils/types/User";
 import { createPatient } from "../utils/api/requests";
+import { PatientSchema } from "../utils/schemas/patient.schema";
+import type { Patient } from "../utils/types/Patient";
+import type { User } from "../utils/types/User";
+
+import styles from "../styles/AddPatient.module.css"
 
 export interface inputs {
     name: Patient["name"];
