@@ -1,12 +1,19 @@
 import { ChangeEvent, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
 
 import { sessionWrapper } from "../../utils/sessionWrapper";
 import { getPatients, deletePatient } from "../../utils/api/requests";
+import Cat from "../../assets/Cat.svg";
+import Dog from "../../assets/Dog.svg";
+import { FaWeightHanging, FaRegCalendarAlt, FaWeight } from "react-icons/fa"
+import { MdPets, MdOutlineEditNote } from "react-icons/md";
 import type { Patient } from "../../utils/types/Patient";
 import type { User } from "../../utils/types/User";
+
+import styles from "../../styles/Patient.module.css";
 
 export default function Patient({ patientData, user }: { patientData: Patient | null, user: User | null }) {
     const [inputName, setInputName] = useState<string>('');
@@ -30,15 +37,41 @@ export default function Patient({ patientData, user }: { patientData: Patient | 
             if(res?.status === 200) router.push('/dashboard')
         })
     }
+    const speciesImg = (function(){
+        if(species === "dog") return Dog;
+        if(species === "cat") return Cat;
+        return <MdPets size={20} />;
+    })()
+    const age = (function(){
+        const dob = new Date(DoB);
+        const now = new Date();
+        let age = now.getFullYear() - dob.getFullYear();
+        if (now.getMonth() > dob.getMonth() && now.getDate() > dob.getDate()) age--;
+        return age;
+    })()
+
   return (
-    <Layout user={user}>
-        <h1>{name}</h1>
-        <h6>({species})</h6>
-        <p>Date of birth: {new Date(DoB).toLocaleDateString()}</p>
-        <p>Weight: {weight} kg</p>
-        {idealWeight && <p>Ideal weight: {idealWeight} kg</p>}
-        <Link href={`/formulate/${id}`}>Formulate diet</Link>
-        <div>
+    <Layout user={user} title={name}>
+        <h1 className={styles.name}>{name}</h1>
+        <div className={styles.species}>
+            <Image src={speciesImg} alt="species" fill={true} priority/>
+        </div>
+        <p className={styles.infoElement}>
+            <FaRegCalendarAlt size={20} />
+            {age} years old
+            {' '}
+            <span className="text-sm tracking-widest">
+                {'('}{new Date(DoB).toLocaleDateString()}{')'}
+            </span>
+        </p>
+        <p className={styles.infoElement}>
+            <FaWeightHanging size={20} /> {weight} kg
+        </p>
+        {idealWeight && <p className={styles.infoElement}>
+            <FaWeight size={20} /> {idealWeight} kg
+        </p>}
+        <Link href={`/formulate/${id}`} className={styles.formulateBtn}>Formulate <MdOutlineEditNote size={28} /></Link>
+        <div className={styles.deletePatient}>
             <label htmlFor="patient-name">Enter patient name to delete</label>
             <input type="text" id="patient-name" onChange={handleName} value={inputName} />
             <button disabled={!(inputName === name)} onClick={handleDelete}>Delete this patient</button>

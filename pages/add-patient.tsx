@@ -79,10 +79,7 @@ export default function AddPatient({ user }: { user: User | null }) {
     }
   return (
     <>
-    <Head>
-        <title>Add a new patient</title>
-    </Head>
-    <Layout user={user}>
+    <Layout user={user} title={'Add patient'}>
         <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center gap-4">
             <div className={styles.inputGroup}>
                 <label htmlFor="name">Name:</label>
