@@ -9,7 +9,7 @@ import { getPatients, deletePatient } from "../../utils/api/requests";
 import Cat from "../../assets/Cat.svg";
 import Dog from "../../assets/Dog.svg";
 import { FaWeightHanging, FaRegCalendarAlt, FaWeight } from "react-icons/fa"
-import { MdPets, MdOutlineEditNote } from "react-icons/md";
+import { MdPets, MdOutlineEditNote, MdEdit } from "react-icons/md";
 import type { Patient } from "../../utils/types/Patient";
 import type { User } from "../../utils/types/User";
 
@@ -49,10 +49,14 @@ export default function Patient({ patientData, user }: { patientData: Patient | 
         if (now.getMonth() > dob.getMonth() && now.getDate() > dob.getDate()) age--;
         return age;
     })()
+    const birthDate = new Date(DoB).toLocaleDateString()
 
   return (
     <Layout user={user} title={name}>
-        <h1 className={styles.name}>{name}</h1>
+        <div className={styles.title}>
+            <h1 className={styles.name}>{name}</h1>
+            <Link href={`/patients/edit/${id}`} className={styles.editBtn}><MdEdit size={20} /></Link>
+        </div>
         <div className={styles.species}>
             <Image src={speciesImg} alt="species" fill={true} priority/>
         </div>
@@ -61,7 +65,7 @@ export default function Patient({ patientData, user }: { patientData: Patient | 
             {age} years old
             {' '}
             <span className="text-sm tracking-widest">
-                {'('}{new Date(DoB).toLocaleDateString()}{')'}
+                {`(${birthDate})`}
             </span>
         </p>
         <p className={styles.infoElement}>
@@ -74,7 +78,9 @@ export default function Patient({ patientData, user }: { patientData: Patient | 
         <div className={styles.deletePatient}>
             <label htmlFor="patient-name">Enter patient name to delete</label>
             <input type="text" id="patient-name" onChange={handleName} value={inputName} />
-            <button disabled={!(inputName === name)} onClick={handleDelete}>Delete this patient</button>
+            <button disabled={!(inputName.toLowerCase() === name.toLowerCase())} onClick={handleDelete}>
+                Delete this patient
+            </button>
         </div>
     </Layout>
   )

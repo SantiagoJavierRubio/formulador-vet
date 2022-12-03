@@ -22,6 +22,17 @@ export async function createPatient(patient: object, token?: User["token"]) {
   });
 }
 
+export async function editPatient(
+  patient: object,
+  patientId: string,
+  token?: User["token"]
+) {
+  if (!token) return;
+  return instance.put(`/patients/${patientId}`, patient, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
 export async function deletePatient(patientId: string, token?: User["token"]) {
   if (!token) return;
   return instance.delete(`/patients/${patientId}`, {
